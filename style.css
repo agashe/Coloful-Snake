@@ -1,0 +1,42 @@
+/**
+ * Colorful-Snake
+ *
+ * author: Mohamed Yousef <engineer.mohamed.yousef@gmail.com>
+ * version : 1.0.0
+ * license: MIT
+ */
+
+/* ********* [global] ********* */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* Source: https://www.dafont.com/font-comment.php?file=04b_30 */
+@font-face {
+    font-family: '04b_30';
+    src: url(fonts/04b_30/04B_30__.TTF);
+}
+
+body {
+    background-color: black;
+    font-family: '04b_30';
+    color: lime;
+}
+/* ********* [global] ********* */
+
+/* ********* [main] ********* */
+main {
+    min-height: 450px;
+    margin: 50px auto;
+    text-align: center;
+}
+/* ********* [main] ********* */
+
+/* ********* [footer] ********* */
+.footer {
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+}
+/* ********* [footer] ********* */
