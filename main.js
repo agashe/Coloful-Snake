@@ -14,11 +14,11 @@
 /** Screen Control **/
 document.querySelectorAll('.home ul li').forEach(function(item){
     item.addEventListener("mouseover", function(){
-        this.classList.add('menu-button-bigger').remove('menu-button');
+        this.classList.add('menu-button-bigger');
     });
 
     item.addEventListener("mouseout", function(){
-        this.classList.add('menu-button').remove('menu-button-bigger');
+        this.classList.remove('menu-button-bigger');
     });
 });
 

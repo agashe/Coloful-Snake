@@ -42,6 +42,16 @@ main {
   margin: 50px auto;
   text-align: center;
 }
+main a {
+  display: block;
+  margin-top: 15px;
+  text-decoration: underline;
+  color: lime;
+  cursor: pointer;
+}
+main a:hover {
+  text-decoration: none;
+}
 /* ********* [main] ********* */
 
 /* ********* [screens] ********* */
