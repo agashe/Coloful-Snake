@@ -22,20 +22,19 @@ document.querySelectorAll('.home ul li').forEach(function(item){
     });
 });
 
-document.getElementById('how-to-play')
-    .addEventListener("click", function () {
-        document.getElementsByClassName('home-buttons')[0].classList.add('hidden');
-        document.getElementsByClassName('how-to-play')[0].classList.remove('hidden');
+document.querySelectorAll('.menu-button').forEach(function (item) {
+    item.addEventListener("click", function () {
+        document.getElementById('home-buttons').classList.add('hidden');
+        document.getElementById(this.getAttribute('data-screen')).classList.remove('hidden');
+    });
 });
 
-document.getElementById('about')
-    .addEventListener("click", function () {
-        document.getElementsByClassName('home-buttons')[0].classList.add('hidden');
-        document.getElementsByClassName('about')[0].classList.remove('hidden');
-});
+document.querySelectorAll('.back-button').forEach(function (item) {
+    item.addEventListener("click", function () {
+        document.querySelectorAll('.screen').forEach(function(item){
+            item.classList.add('hidden');
+        });
 
-document.getElementById('new-game')
-    .addEventListener("click", function () {
-        document.getElementsByClassName('home-buttons')[0].classList.add('hidden');
-        document.getElementsByClassName('game')[0].classList.remove('hidden');
+        document.getElementById('home-buttons').classList.remove('hidden');
+    });
 });
