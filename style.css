@@ -76,7 +76,36 @@ main a:hover {
 /* ********* [home] ********* */
 
 /* ********* [game] ********* */
+#game {
+  margin-top: 0px;
+}
 
+#map {
+  height: 380px;
+  width: 600px;
+  margin: 25px auto;
+  display: grid;
+  grid-template-columns: repeat(20, 20px);
+  grid-template-rows: repeat(13, 20px);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+.tile {
+  height: 20px;
+  width: 20px;
+}
+.boundary {
+  background-color: lime;
+}
+.red {
+  background-color: red;
+}
+.yellow {
+  background-color: yellow;
+}
+.blue {
+  background-color: blue;
+}
 /* ********* [game] ********* */
 
 /* ********* [footer] ********* */

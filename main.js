@@ -7,9 +7,79 @@
  */
 
 /** Init **/
+const rows = 13;
+const cols = 20;
 
+const tile     = 0;
+const boundary = 1;
+const rFruit   = 2;
+const yFruit   = 3;
+const bFruit   = 4;
 
+let map    = [];
+let snake  = [];
+let head   = [];
+let tail   = [];
+let fruit  = [];
+let scores = [];
 
+function initGame() {
+    let i, j, k, arr;
+    
+    // fill the map
+    for (i = 0; i < rows; i++) {
+        arr = [];
+        for (j = 0; j < cols; j++) {
+            arr.push(tile);
+        }
+        map.push(arr);
+    }
+
+    // set boundaries
+    for (i = 0; i < cols; i++) {
+        map[0][i] = boundary; // top
+    }
+    
+    for (i = 0; i < rows; i++) {
+        map[i][0] = boundary; // right
+    }
+    
+    for (i = 0; i < cols; i++) {
+        map[rows-1][i] = boundary; // bottom
+    }
+
+    for (i = 0; i < rows; i++) {
+        map[i][cols-1] = boundary; // left
+    }
+}
+
+/** Game Functions **/
+function drawMap(){
+    let i, j, el;
+    for (i = 0; i < rows; i++) {
+        for (j = 0; j < cols; j++) {
+            switch (map[i][j]) {
+                case tile:
+                    el = document.createElement('div');
+                    el.classList.add('tile');
+                    el.innerHTML = ' ';
+                    document.getElementById('map').append(el);
+                break;
+                case boundary:
+                    el = document.createElement('div');
+                    el.classList.add('tile');
+                    el.classList.add('boundary');
+                    el.innerHTML = ' ';
+                    document.getElementById('map').append(el);
+                break;
+            }
+        }
+    }
+}
+
+/** Game Loop **/
+initGame();
+drawMap();
 
 /** Screen Control **/
 document.querySelectorAll('.home ul li').forEach(function(item){
