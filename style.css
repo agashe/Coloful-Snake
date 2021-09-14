@@ -117,6 +117,12 @@ footer {
 /* ********* [footer] ********* */
 
 /* ********* [responsive] ********* */
+@media only screen and (max-width: 1024px) {
+  .screen {
+    width: 100%;
+  }
+}
+
 @media only screen and (max-width: 600px) {
   main {
     min-height: 300px;
@@ -139,9 +145,23 @@ footer {
   .home ul li {
     font-size: 1.5rem;
   }
+
+  #map {
+    height: 300px;
+    width: 400px;
+    margin: 25px auto;
+    grid-template-columns: repeat(20, 15px);
+    grid-template-rows: repeat(13, 15px);
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+  }
+  .tile {
+    height: 15px;
+    width: 15px;
+  }
 }
 
-@media only screen and (max-width: 350px) {
+@media only screen and (max-width: 450px) {
   main {
     min-height: 250px;
   }
@@ -155,6 +175,20 @@ footer {
 
   .home h1 {
     font-size: 1.5rem;
+  }
+
+  #map {
+    height: 200px;
+    width: 250px;
+    margin: 25px auto;
+    grid-template-columns: repeat(20, 10px);
+    grid-template-rows: repeat(13, 10px);
+    grid-column-gap: 2.5px;
+    grid-row-gap: 2.5px;
+  }
+  .tile {
+    height: 10px;
+    width: 10px;
   }
 
   footer p {
