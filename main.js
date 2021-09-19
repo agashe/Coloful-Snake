@@ -11,7 +11,7 @@ const rows = 13;
 const cols = 20;
 
 const tile     = 0;
-const boundary = 1;
+const wall = 1;
 const rFruit   = 2;
 const yFruit   = 3;
 const bFruit   = 4;
@@ -37,19 +37,19 @@ function initGame() {
 
     // set boundaries
     for (i = 0; i < cols; i++) {
-        map[0][i] = boundary; // top
+        map[0][i] = wall; // top
     }
     
     for (i = 0; i < rows; i++) {
-        map[i][0] = boundary; // right
+        map[i][0] = wall; // right
     }
     
     for (i = 0; i < cols; i++) {
-        map[rows-1][i] = boundary; // bottom
+        map[rows-1][i] = wall; // bottom
     }
 
     for (i = 0; i < rows; i++) {
-        map[i][cols-1] = boundary; // left
+        map[i][cols-1] = wall; // left
     }
 }
 
@@ -65,10 +65,10 @@ function drawMap(){
                     el.innerHTML = ' ';
                     document.getElementById('map').append(el);
                 break;
-                case boundary:
+                case wall:
                     el = document.createElement('div');
                     el.classList.add('tile');
-                    el.classList.add('boundary');
+                    el.classList.add('wall');
                     el.innerHTML = ' ';
                     document.getElementById('map').append(el);
                 break;
