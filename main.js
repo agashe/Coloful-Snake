@@ -10,24 +10,29 @@
 const rows = 13;
 const cols = 20;
 
-const tile     = 0;
-const wall     = 1;
-const rFruit   = 2;
-const yFruit   = 3;
-const bFruit   = 4;
+const tile        = 0;
+const wall        = 1;
+const redFruit    = 2;
+const yellowFruit = 3;
+const blueFruit   = 4;
 
 let map    = [];
 let snake  = [];
 let head   = [];
 let tail   = [];
-let fruit  = [];
-let scores = [];
+
+let scores = {
+    redFruits   : 0,
+    yellowFruits: 0,
+    blueFruits  : 0,
+};
 
 let timer = {
     minutes: 3,
     seconds: 0
 };
 
+/** Game Functions **/
 function initGame() {
     let i, j, k, arr;
     
@@ -58,7 +63,6 @@ function initGame() {
     }
 }
 
-/** Game Functions **/
 function drawMap() {
     let i, j, el;
     for (i = 0; i < rows; i++) {
