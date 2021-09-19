@@ -11,7 +11,7 @@ const rows = 13;
 const cols = 20;
 
 const tile     = 0;
-const wall = 1;
+const wall     = 1;
 const rFruit   = 2;
 const yFruit   = 3;
 const bFruit   = 4;
@@ -22,6 +22,11 @@ let head   = [];
 let tail   = [];
 let fruit  = [];
 let scores = [];
+
+let timer = {
+    minutes: 3,
+    seconds: 0
+};
 
 function initGame() {
     let i, j, k, arr;
@@ -35,7 +40,7 @@ function initGame() {
         map.push(arr);
     }
 
-    // set boundaries
+    // set walls
     for (i = 0; i < cols; i++) {
         map[0][i] = wall; // top
     }
@@ -54,7 +59,7 @@ function initGame() {
 }
 
 /** Game Functions **/
-function drawMap(){
+function drawMap() {
     let i, j, el;
     for (i = 0; i < rows; i++) {
         for (j = 0; j < cols; j++) {
@@ -77,17 +82,42 @@ function drawMap(){
     }
 }
 
+function formatTime(time) {
+    return (time < 10)? ('0' + time) : time;
+}
+
 /** Game Loop **/
 initGame();
 drawMap();
 
+let gameTimer = setInterval(function () {
+    if (timer.minutes == 0 && timer.seconds == 0) {
+        // check scores
+    }
+    else if (timer.seconds == 0) {
+        timer.minutes -= 1;
+        timer.seconds = 59;
+    }
+    else {
+        timer.seconds -= 1;
+    }
+
+    document.querySelector('#timer h1').innerHTML = `
+        ${formatTime(timer.minutes)}:${formatTime(timer.seconds)}
+    `;
+}, 1000);
+
+let mainLoop = setInterval(function () {
+    // the whole fun
+}, 100);
+
 /** Screen Control **/
-document.querySelectorAll('.home ul li').forEach(function(item){
-    item.addEventListener("mouseover", function(){
+document.querySelectorAll('.home ul li').forEach(function(item) {
+    item.addEventListener("mouseover", function() {
         this.classList.add('menu-button-bigger');
     });
 
-    item.addEventListener("mouseout", function(){
+    item.addEventListener("mouseout", function() {
         this.classList.remove('menu-button-bigger');
     });
 });
@@ -108,7 +138,7 @@ document.querySelectorAll('.menu-button').forEach(function(item) {
 
 document.querySelectorAll('.back-button').forEach(function(item) {
     item.addEventListener("click", function() {
-        document.querySelectorAll('.screen').forEach(function(item){
+        document.querySelectorAll('.screen').forEach(function(item) {
             item.classList.add('hidden');
         });
 
