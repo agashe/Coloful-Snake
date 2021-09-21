@@ -90,18 +90,18 @@ main a:hover {
 }
 
 #map {
-  height: 380px;
-  width: 600px;
-  margin: 25px auto;
+  height: 320px;
+  width: 495px;
+  margin: 15px auto;
   display: grid;
-  grid-template-columns: repeat(20, 20px);
-  grid-template-rows: repeat(13, 20px);
+  grid-template-columns: repeat(20, 15px);
+  grid-template-rows: repeat(13, 15px);
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 }
 .tile {
-  height: 20px;
-  width: 20px;
+  height: 15px;
+  width: 15px;
 }
 .wall {
   background-color: lime;
@@ -117,8 +117,8 @@ main a:hover {
 }
 
 #score {
-  height: 30px;
-  width: 600px;
+  height: 20px;
+  width: 480px;
   margin: 15px auto;
 }
 #score span {
