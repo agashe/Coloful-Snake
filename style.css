@@ -34,6 +34,14 @@ body {
 .menu-button-bigger {
   font-size: 2.5rem;
 }
+
+.d-inline {
+  display: inline-block;
+}
+
+.separator::after {
+  content: ".";
+}
 /* ********* [global] ********* */
 
 /* ********* [main] ********* */
@@ -78,6 +86,7 @@ main a:hover {
 /* ********* [game] ********* */
 #game {
   margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 #map {
@@ -140,10 +149,10 @@ footer {
     min-height: 300px;
   }
 
-  .menu-button * {
+  .menu-button {
     font-size: 1.5rem;
   }
-  .menu-button-bigger * {
+  .menu-button-bigger {
     font-size: 1.5rem;
   }
 
@@ -153,9 +162,6 @@ footer {
 
   .home h1 {
     font-size: 2rem;
-  }
-  .home ul li {
-    font-size: 1.5rem;
   }
 
   #map {
@@ -185,10 +191,10 @@ footer {
     min-height: 250px;
   }
 
-  .menu-button * {
+  .menu-button {
     font-size: 1.25rem;
   }
-  .menu-button-bigger * {
+  .menu-button-bigger {
     font-size: 1.25rem;
   }
 

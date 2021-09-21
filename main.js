@@ -150,7 +150,7 @@ document.querySelectorAll('.back-button').forEach(function(item) {
     });
 });
 
-document.querySelector('#game-back-button').addEventListener("click", function() {
+document.querySelector('#quit-button').addEventListener("click", function() {
     if (!confirm('Are You Sure?')) return;
 
     document.getElementById('game').classList.add('hidden');
