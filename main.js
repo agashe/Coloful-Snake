@@ -132,8 +132,26 @@ let gameTimer = setInterval(function () {
 }, 1000);
 
 let mainLoop = setInterval(function () {
-    // the whole fun
+    
 }, 100);
+
+/** Game Control **/
+window.addEventListener('keyup', function (e) {
+    if (e.keyCode == 38) {
+        // up
+    }
+    else if (e.keyCode == 39) {
+        // right
+    }
+    else if (e.keyCode == 40) {
+        // down
+    }
+    else if (e.keyCode == 37) {
+        // left
+    }
+
+    return;
+});
 
 /** Screen Control **/
 document.querySelectorAll('.home ul li').forEach(function(item) {
