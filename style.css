@@ -124,11 +124,12 @@ main a:hover {
   width: 480px;
   margin: 15px auto;
 }
-#score span {
-  margin: 0 25px;
-}
 #score .tile {
   display: inline-block;
+  margin-left: 25px;
+}
+#score span {
+  margin-right: 25px;
 }
 /* ********* [game] ********* */
 
@@ -184,8 +185,11 @@ footer {
   #score {
     width: 100%;
   }
+  #score .tile {
+    margin-left: 10px;
+  }
   #score span {
-    margin: 0 10px;
+    margin-right: 10px;
   }
 }
 

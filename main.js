@@ -9,6 +9,7 @@
 /** Init **/
 const rows = 13;
 const cols = 20;
+const maxScore = 5;
 
 const tile        = 0;
 const body        = 1;
@@ -55,11 +56,20 @@ function initGame() {
     for (i = 0; i < rows; i++) {
         map[i][0] = wall; // right
         map[i][cols-1] = wall; // left
-    }    
+    }
+    
+    // set random scores
+    scores.redFruits = Math.floor(Math.random() * maxScore); 
+    updateScore('red');
+    scores.blueFruits = Math.floor(Math.random() * maxScore); 
+    updateScore('blue');
+    scores.yellowFruits = Math.floor(Math.random() * maxScore);
+    updateScore('yellow');
 }
 
 function drawMap() {
     let i, j, el;
+    
     for (i = 0; i < rows; i++) {
         for (j = 0; j < cols; j++) {
             el = document.createElement('div');
@@ -92,6 +102,10 @@ function drawMap() {
 
 function formatTime(time) {
     return (time < 10)? ('0' + time) : time;
+}
+
+function updateScore(color) {
+    document.getElementById(color + '-score').innerHTML = scores[color + 'Fruits'];
 }
 
 /** Game Loop **/
