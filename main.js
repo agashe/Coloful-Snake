@@ -11,10 +11,11 @@ const rows = 13;
 const cols = 20;
 
 const tile        = 0;
-const wall        = 1;
-const redFruit    = 2;
-const yellowFruit = 3;
-const blueFruit   = 4;
+const body        = 1;
+const wall        = 2;
+const redFruit    = 3;
+const yellowFruit = 4;
+const blueFruit   = 5;
 
 let map    = [];
 let snake  = [];
@@ -48,40 +49,43 @@ function initGame() {
     // set walls
     for (i = 0; i < cols; i++) {
         map[0][i] = wall; // top
+        map[rows-1][i] = wall; // bottom
     }
     
     for (i = 0; i < rows; i++) {
         map[i][0] = wall; // right
-    }
-    
-    for (i = 0; i < cols; i++) {
-        map[rows-1][i] = wall; // bottom
-    }
-
-    for (i = 0; i < rows; i++) {
         map[i][cols-1] = wall; // left
-    }
+    }    
 }
 
 function drawMap() {
     let i, j, el;
     for (i = 0; i < rows; i++) {
         for (j = 0; j < cols; j++) {
+            el = document.createElement('div');
+            el.classList.add('tile');
+            el.innerHTML = ' ';
+
+            // set tile type (if it's not just empty)
             switch (map[i][j]) {
-                case tile:
-                    el = document.createElement('div');
-                    el.classList.add('tile');
-                    el.innerHTML = ' ';
-                    document.getElementById('map').append(el);
+                case body:
+                    el.classList.add('body');
                 break;
                 case wall:
-                    el = document.createElement('div');
-                    el.classList.add('tile');
-                    el.classList.add('wall');
-                    el.innerHTML = ' ';
-                    document.getElementById('map').append(el);
+                    el.classList.add('wall');                    
+                break;
+                case redFruit:
+                    el.classList.add('red');                    
+                break;
+                case yellowFruit:
+                    el.classList.add('yellow');                    
+                break;
+                case blueFruit:
+                    el.classList.add('blue');                    
                 break;
             }
+
+            document.getElementById('map').append(el);
         }
     }
 }

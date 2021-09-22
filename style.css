@@ -104,6 +104,9 @@ main a:hover {
   width: 15px;
 }
 .wall {
+  background-color: body;
+}
+.wall {
   background-color: lime;
 }
 .red {
