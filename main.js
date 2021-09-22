@@ -61,10 +61,10 @@ function initGame() {
     // set random scores
     scores.redFruits = Math.floor(Math.random() * maxScore); 
     updateScore('red');
-    scores.blueFruits = Math.floor(Math.random() * maxScore); 
-    updateScore('blue');
     scores.yellowFruits = Math.floor(Math.random() * maxScore);
     updateScore('yellow');
+    scores.blueFruits = Math.floor(Math.random() * maxScore); 
+    updateScore('blue');
 }
 
 function drawMap() {
@@ -105,7 +105,9 @@ function formatTime(time) {
 }
 
 function updateScore(color) {
-    document.getElementById(color + '-score').innerHTML = scores[color + 'Fruits'];
+    if (['red', 'yellow', 'blue'].includes(color)) {
+        document.getElementById(color + '-score').innerHTML = scores[color + 'Fruits'] ?? 0;
+    }
 }
 
 /** Game Loop **/
