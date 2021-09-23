@@ -11,6 +11,7 @@ const rows = 13;
 const cols = 20;
 const maxScore = 5;
 const minScore = 0;
+const initLength = 5;
 
 const tile        = 0;
 const body        = 1;
@@ -37,7 +38,7 @@ let timer = {
 
 /** Game Functions **/
 function initGame() {
-    let i, j, k, arr;
+    let i, j, arr;
     
     // fill the map
     for (i = 0; i < rows; i++) {
@@ -60,19 +61,17 @@ function initGame() {
     }
     
     // set random scores
-    scores.redFruits = generateRandomNumber(minScore, maxScore); 
+    scores.redFruits = randomNumber(minScore, maxScore); 
     updateScore('red', true);
-    scores.yellowFruits = generateRandomNumber(minScore, maxScore);
+    scores.yellowFruits = randomNumber(minScore, maxScore);
     updateScore('yellow', true);
-    scores.blueFruits = generateRandomNumber(minScore, maxScore); 
+    scores.blueFruits = randomNumber(minScore, maxScore); 
     updateScore('blue', true);
 
     // create snake of 5 nodes
-    addNode();
-    addNode();
-    addNode();
-    addNode();
-    addNode();
+    for (i = 0; i < initLength; i++) {
+        addNode();
+    }
 
     // add random fruit
     createFruit();
@@ -111,7 +110,7 @@ function drawMap() {
     }
 }
 
-function generateRandomNumber(min, max) {
+function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -138,11 +137,11 @@ function addNode() {
 }
 
 function createFruit() {
-    snake.push({
-        y: 0,
-        x: 0,
-        dir: 0,
-    });
+    map[randomNumber(1, rows - 2)][randomNumber(1, cols - 2)] = randomNumber(3, 5);
+}
+
+function clearMap() {
+    document.getElementById('map').innerHTML = '';
 }
 
 /** Game Loop **/
@@ -167,7 +166,8 @@ let gameTimer = setInterval(function () {
 }, 1000);
 
 let mainLoop = setInterval(function () {
-    
+    clearMap();
+    drawMap();
 }, 100);
 
 /** Game Control **/
