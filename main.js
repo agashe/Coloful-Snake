@@ -10,6 +10,7 @@
 const rows = 13;
 const cols = 20;
 const maxScore = 5;
+const minScore = 0;
 
 const tile        = 0;
 const body        = 1;
@@ -20,8 +21,8 @@ const blueFruit   = 5;
 
 let map    = [];
 let snake  = [];
-let head   = [];
-let tail   = [];
+let head   = null;
+let tail   = null;
 
 let scores = {
     redFruits   : 0,
@@ -59,12 +60,22 @@ function initGame() {
     }
     
     // set random scores
-    scores.redFruits = Math.floor(Math.random() * maxScore); 
-    updateScore('red');
-    scores.yellowFruits = Math.floor(Math.random() * maxScore);
-    updateScore('yellow');
-    scores.blueFruits = Math.floor(Math.random() * maxScore); 
-    updateScore('blue');
+    scores.redFruits = generateRandomNumber(minScore, maxScore); 
+    updateScore('red', true);
+    scores.yellowFruits = generateRandomNumber(minScore, maxScore);
+    updateScore('yellow', true);
+    scores.blueFruits = generateRandomNumber(minScore, maxScore); 
+    updateScore('blue', true);
+
+    // create snake of 5 nodes
+    addNode();
+    addNode();
+    addNode();
+    addNode();
+    addNode();
+
+    // add random fruit
+    createFruit();
 }
 
 function drawMap() {
@@ -100,14 +111,38 @@ function drawMap() {
     }
 }
 
+function generateRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function formatTime(time) {
     return (time < 10)? ('0' + time) : time;
 }
 
-function updateScore(color) {
+function updateScore(color, onlyPrint) {
     if (['red', 'yellow', 'blue'].includes(color)) {
-        document.getElementById(color + '-score').innerHTML = scores[color + 'Fruits'] ?? 0;
+        if (!onlyPrint && (scores[color + 'Fruits'] - 1) > 0) {
+            scores[color + 'Fruits'] -= 1;
+        }
+        
+        document.getElementById(color + '-score').innerHTML = scores[color + 'Fruits'];
     }
+}
+
+function addNode() {
+    snake.push({
+        y: 0,
+        x: 0,
+        dir: 0,
+    });
+}
+
+function createFruit() {
+    snake.push({
+        y: 0,
+        x: 0,
+        dir: 0,
+    });
 }
 
 /** Game Loop **/

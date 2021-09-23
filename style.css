@@ -103,8 +103,8 @@ main a:hover {
   height: 15px;
   width: 15px;
 }
-.wall {
-  background-color: body;
+.body {
+  background-color: white;
 }
 .wall {
   background-color: lime;
