@@ -129,19 +129,67 @@ function updateScore(color, onlyPrint) {
 }
 
 function addNode() {
-    snake.push({
-        y: 0,
-        x: 0,
-        dir: 0,
-    });
+    // if no snake yet , create new one
+    // else push new node
+
+    if (!snake.length) {
+        snake.push({
+            y: 10,
+            x: 14,
+            dir: 'left',
+        });
+
+        map[snake[0].y][snake[0].x] = body;
+    } else {
+
+    }
 }
 
 function createFruit() {
-    map[randomNumber(1, rows - 2)][randomNumber(1, cols - 2)] = randomNumber(3, 5);
+    let randomY = 0, randomX = 0;
+
+    // create new fruit on empty tile
+    while (map[randomY][randomX] != tile) {
+        randomY = randomNumber(1, rows - 2);
+        randomX = randomNumber(1, cols - 2);
+    }
+
+    map[randomY][randomX] = randomNumber(3, 5);
 }
 
 function clearMap() {
     document.getElementById('map').innerHTML = '';
+}
+
+function moveSnake() {
+    snake.forEach(function (node, index) {
+        map[node.y][node.x] = tile;
+
+        switch (node.dir) {
+            case 'up':
+                node.y -= 1;
+                break;
+            case 'right':
+                node.x += 1;
+                break;
+            case 'down':
+                node.y += 1;
+                break;
+            case 'left':
+                node.x -= 1;
+                break;
+        }
+
+        if (index == 0) {
+            if (map[node.y][node.x] == body || map[node.y][node.x] == wall) {
+                alert('you lose');
+                clearInterval(gameTimer);
+                clearInterval(mainLoop);
+            }
+        }
+
+        map[node.y][node.x] = body;
+    });
 }
 
 /** Game Loop **/
@@ -168,21 +216,25 @@ let gameTimer = setInterval(function () {
 let mainLoop = setInterval(function () {
     clearMap();
     drawMap();
-}, 100);
+    moveSnake();
+}, 500);
 
 /** Game Control **/
 window.addEventListener('keyup', function (e) {
-    if (e.keyCode == 38) {
-        // up
+    if (!snake.length) {
+        return; // stop any input before snake creation
     }
-    else if (e.keyCode == 39) {
-        // right
+    else if (e.keyCode == 38 && snake[0].dir != 'down') {
+        snake[0].dir = 'up';
     }
-    else if (e.keyCode == 40) {
-        // down
+    else if (e.keyCode == 39 && snake[0].dir != 'left') {
+        snake[0].dir = 'right';
     }
-    else if (e.keyCode == 37) {
-        // left
+    else if (e.keyCode == 40 && snake[0].dir != 'up') {
+        snake[0].dir = 'down';
+    }
+    else if (e.keyCode == 37 && snake[0].dir != 'right') {
+        snake[0].dir = 'left';
     }
 
     return;
