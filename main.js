@@ -9,9 +9,12 @@
 /** Init **/
 const rows = 13;
 const cols = 20;
-const maxScore = 5;
-const minScore = 0;
+const maxScore   = 5;
+const minScore   = 0;
 const initLength = 5;
+const initY      = 10;
+const initX      = 14;
+const initDir    = 'left';
 
 const tile        = 0;
 const body        = 1;
@@ -22,8 +25,7 @@ const blueFruit   = 5;
 
 let map    = [];
 let snake  = [];
-let head   = null;
-let tail   = null;
+let game   = false;
 
 let scores = {
     redFruits   : 0,
@@ -68,7 +70,7 @@ function initGame() {
     scores.blueFruits = randomNumber(minScore, maxScore); 
     updateScore('blue', true);
 
-    // create snake of 5 nodes
+    // create new snake
     for (i = 0; i < initLength; i++) {
         addNode();
     }
@@ -118,7 +120,7 @@ function formatTime(time) {
     return (time < 10)? ('0' + time) : time;
 }
 
-function updateScore(color, onlyPrint) {
+function updateScore(color, onlyPrint = false) {
     if (['red', 'yellow', 'blue'].includes(color)) {
         if (!onlyPrint && (scores[color + 'Fruits'] - 1) > 0) {
             scores[color + 'Fruits'] -= 1;
@@ -129,20 +131,43 @@ function updateScore(color, onlyPrint) {
 }
 
 function addNode() {
+    let x = 0, y = 0, dir = '';
+
     // if no snake yet , create new one
     // else push new node
-
     if (!snake.length) {
-        snake.push({
-            y: 10,
-            x: 14,
-            dir: 'left',
-        });
-
-        map[snake[0].y][snake[0].x] = body;
+        y = initY;
+        x = initX;
+        dir = initDir;
     } else {
+        y   = snake[snake.length - 1].y;
+        x   = snake[snake.length - 1].x;
+        dir = snake[snake.length - 1].dir;
 
+        switch (snake[snake.length - 1].dir) {
+            case 'up':
+                y += 1;
+                break;
+            case 'right':
+                x -= 1;
+                break;
+            case 'down':
+                y -= 1;
+                break;
+            case 'left':
+                x += 1;
+                break;
+        }
     }
+
+    // create the node and render
+    snake.push({
+        y: y,
+        x: x,
+        dir: dir,
+    });
+    
+    map[snake[0].y][snake[0].x] = body;
 }
 
 function createFruit() {
@@ -180,23 +205,48 @@ function moveSnake() {
                 break;
         }
 
+        map[node.y][node.x] = body;
+        
         if (index == 0) {
             if (map[node.y][node.x] == body || map[node.y][node.x] == wall) {
                 alert('you lose');
-                clearInterval(gameTimer);
-                clearInterval(mainLoop);
+                game = false;
             }
-        }
+            else if (map[node.y][node.x] == redFruit) {
+                updateScore('red');
+            }
+            else if (map[node.y][node.x] == yellowFruit) {
+                updateScore('yellow');
+            }
+            else if (map[node.y][node.x] == blueFruit) {
+                updateScore('blue');
+            }
+        } else {
+            switch (snake[index - 1].dir) {
+                case 'up':
+                    node.x = snake[index - 1].x;
+                    break;
+                case 'right':
+                    node.y = snake[index - 1].y;
+                    break;
+                case 'down':
+                    node.x = snake[index - 1].x;
+                    break;
+                case 'left':
+                    node.y = snake[index - 1].y;
+                    break;
+            }
 
-        map[node.y][node.x] = body;
+            node.dir = snake[index - 1].dir;
+        }
     });
 }
 
 /** Game Loop **/
-initGame();
-drawMap();
-
 let gameTimer = setInterval(function () {
+    // when the game runs
+    if (!game) return;
+
     if (timer.minutes == 0 && timer.seconds == 0) {
         // check scores
     }
@@ -214,10 +264,12 @@ let gameTimer = setInterval(function () {
 }, 1000);
 
 let mainLoop = setInterval(function () {
+    if (!game) return;
+
     clearMap();
     drawMap();
     moveSnake();
-}, 500);
+}, 1000);
 
 /** Game Control **/
 window.addEventListener('keyup', function (e) {
@@ -261,6 +313,11 @@ document.querySelectorAll('.menu-button').forEach(function(item) {
             document.querySelector('.home h1').classList.add('hidden');
             document.querySelector('.home small').classList.add('hidden');
             document.querySelector('footer').classList.add('hidden');
+
+            // start the game
+            game = true;
+            initGame();
+            drawMap();
         }
     });
 });
@@ -283,4 +340,23 @@ document.querySelector('#quit-button').addEventListener("click", function() {
     document.querySelector('.home h1').classList.remove('hidden');
     document.querySelector('.home small').classList.remove('hidden');
     document.querySelector('footer').classList.remove('hidden');
+
+    // stop the game
+    game = false;
+    clearMap();
+    
+
+    map   = [];
+    snake = [];
+
+    scores = {
+        redFruits   : 0,
+        yellowFruits: 0,
+        blueFruits  : 0,
+    };
+
+    timer = {
+        minutes: 3,
+        seconds: 0
+    };
 });
