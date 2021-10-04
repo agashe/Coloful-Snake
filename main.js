@@ -30,7 +30,7 @@ let game   = false;
 let scores = {
     redFruits   : 0,
     yellowFruits: 0,
-    blueFruits  : 0,
+    blueFruits  : 0
 };
 
 let timer = {
@@ -164,7 +164,7 @@ function addNode() {
     snake.push({
         y: y,
         x: x,
-        dir: dir,
+        dir: dir
     });
     
     map[snake[0].y][snake[0].x] = body;
@@ -187,27 +187,32 @@ function clearMap() {
 }
 
 function moveSnake() {
+    let x = 0, y = 0, dir = '';
+    let oldX = 0, oldY = 0, oldDir = '';
+
     snake.forEach(function (node, index) {
+        y = node.y;
+        x = node.x;
+        dir = node.dir;
+
         map[node.y][node.x] = tile;
-
-        switch (node.dir) {
-            case 'up':
-                node.y -= 1;
-                break;
-            case 'right':
-                node.x += 1;
-                break;
-            case 'down':
-                node.y += 1;
-                break;
-            case 'left':
-                node.x -= 1;
-                break;
-        }
-
-        map[node.y][node.x] = body;
         
         if (index == 0) {
+            switch (node.dir) {
+                case 'up':
+                    node.y -= 1;
+                    break;
+                case 'right':
+                    node.x += 1;
+                    break;
+                case 'down':
+                    node.y += 1;
+                    break;
+                case 'left':
+                    node.x -= 1;
+                    break;
+            }
+
             if (map[node.y][node.x] == body || map[node.y][node.x] == wall) {
                 alert('you lose');
                 game = false;
@@ -222,29 +227,21 @@ function moveSnake() {
                 updateScore('blue');
             }
         } else {
-            switch (snake[index - 1].dir) {
-                case 'up':
-                    node.x = snake[index - 1].x;
-                    break;
-                case 'right':
-                    node.y = snake[index - 1].y;
-                    break;
-                case 'down':
-                    node.x = snake[index - 1].x;
-                    break;
-                case 'left':
-                    node.y = snake[index - 1].y;
-                    break;
-            }
-
-            node.dir = snake[index - 1].dir;
+            node.y = oldY;
+            node.x = oldX;
+            node.dir = oldDir;
         }
+
+        oldY = y;
+        oldX = x;
+        oldDir = dir;
+
+        map[node.y][node.x] = body;
     });
 }
 
 /** Game Loop **/
 let gameTimer = setInterval(function () {
-    // when the game runs
     if (!game) return;
 
     if (timer.minutes == 0 && timer.seconds == 0) {
