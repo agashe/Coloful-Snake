@@ -26,6 +26,7 @@ const blueFruit   = 5;
 let map    = [];
 let snake  = [];
 let game   = false;
+let sound   = true;
 
 let scores = {
     redFruits   : 0,
@@ -42,6 +43,21 @@ let timer = {
 function initGame() {
     let i, j, arr;
     
+    // init all values
+    map   = [];
+    snake = [];
+
+    scores = {
+        redFruits   : 0,
+        yellowFruits: 0,
+        blueFruits  : 0,
+    };
+
+    timer = {
+        minutes: 3,
+        seconds: 0
+    };
+
     // fill the map
     for (i = 0; i < rows; i++) {
         arr = [];
@@ -179,7 +195,8 @@ function createFruit() {
         randomX = randomNumber(1, cols - 2);
     }
 
-    map[randomY][randomX] = randomNumber(3, 5);
+    // set fruit color (min: red -> 3 , max: blue -> 5)
+    map[randomY][randomX] = randomNumber(redFruit, blueFruit);
 }
 
 function clearMap() {
@@ -266,7 +283,7 @@ let mainLoop = setInterval(function () {
     clearMap();
     drawMap();
     moveSnake();
-}, 1000);
+}, 250);
 
 /** Game Control **/
 window.addEventListener('keyup', function (e) {
@@ -286,6 +303,10 @@ window.addEventListener('keyup', function (e) {
         snake[0].dir = 'left';
     }
 
+    clearMap();
+    drawMap();
+    moveSnake();
+    
     return;
 });
 
@@ -332,28 +353,14 @@ document.querySelectorAll('.back-button').forEach(function(item) {
 document.querySelector('#quit-button').addEventListener("click", function() {
     if (!confirm('Are You Sure?')) return;
 
+    // stop the game
+    game = false;
+    clearMap();
+
+    // hide game screen , show home menu
     document.getElementById('game').classList.add('hidden');
     document.getElementById('home-buttons').classList.remove('hidden');
     document.querySelector('.home h1').classList.remove('hidden');
     document.querySelector('.home small').classList.remove('hidden');
     document.querySelector('footer').classList.remove('hidden');
-
-    // stop the game
-    game = false;
-    clearMap();
-    
-
-    map   = [];
-    snake = [];
-
-    scores = {
-        redFruits   : 0,
-        yellowFruits: 0,
-        blueFruits  : 0,
-    };
-
-    timer = {
-        minutes: 3,
-        seconds: 0
-    };
 });
