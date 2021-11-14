@@ -47,9 +47,29 @@
                     new rules written in JS; thanks for playing , enjoy the game :)
                 </p>
 
+                <p>
+                    Sound Effects by <a href="https://mixkit.co" target="_blank" class="d-inline">mixkit</a>
+                </p>
+
                 <a href="https://github.com/agashe/Coloful-Snake" target="_blank" class="d-inline">GitHub</a>
                 <i class="separator"></i>
                 <a class="back-button d-inline">Back</a>
+            </div>
+
+            <div id="win" class="screen hidden">
+                <h3 class="menu-button">You Win :D</h3>
+
+                <a id="pause-button" class="d-inline">Play Again</a>
+                <i class="separator"></i>
+                <a class="back-button d-inline">Home</a>
+            </div>
+
+            <div id="lose" class="screen hidden">
+                <h3 class="menu-button">You Lose :(</h3>
+
+                <a id="pause-button" class="d-inline">Play Again</a>
+                <i class="separator"></i>
+                <a class="back-button d-inline">Home</a>
             </div>
     
             <div id="game" class="screen hidden">
@@ -63,8 +83,8 @@
 
                 <div id="score">
                     <div class="tile red" ></div> &times; <span id="red-score">0</span>
-                    <div class="tile yellow"></div> &times; <span id="blue-score">0</span>
-                    <div class="tile blue"></div> &times; <span id="yellow-score">0</span>
+                    <div class="tile yellow"></div> &times; <span id="yellow-score">0</span>
+                    <div class="tile blue"></div> &times; <span id="blue-score">0</span>
                 </div>
 
                 <a id="mute-button" class="d-inline" title="Mute">
@@ -85,6 +105,9 @@
             <p>Colorful-Snake &copy; 2021</p>
         </footer>
         
+        <audio id="eat-sound" src="sounds/eat.wav" preload="auto"></audio>
+        <audio id="lose-sound" src="sounds/lose.wav" preload="auto"></audio>
+        <audio id="win-sound" src="sounds/win.wav" preload="auto"></audio>
         <script src="main.js"></script>
     </body>
 </html>

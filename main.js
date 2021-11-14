@@ -79,11 +79,11 @@ function initGame() {
     }
     
     // set random scores
-    scores.redFruits = randomNumber(minScore, maxScore); 
+    scores.redFruits = 1; //randomNumber(minScore, maxScore); 
     updateScore('red', true);
-    scores.yellowFruits = randomNumber(minScore, maxScore);
+    scores.yellowFruits = 0; //randomNumber(minScore, maxScore);
     updateScore('yellow', true);
-    scores.blueFruits = randomNumber(minScore, maxScore); 
+    scores.blueFruits = 0; //randomNumber(minScore, maxScore); 
     updateScore('blue', true);
 
     // create new snake
@@ -138,12 +138,16 @@ function formatTime(time) {
 
 function updateScore(color, onlyPrint = false) {
     if (['red', 'yellow', 'blue'].includes(color)) {
-        if (!onlyPrint && (scores[color + 'Fruits'] - 1) > 0) {
+        if (!onlyPrint && (scores[color + 'Fruits'] - 1) >= 0) {
             scores[color + 'Fruits'] -= 1;
         }
-        
+
         document.getElementById(color + '-score').innerHTML = scores[color + 'Fruits'];
     }
+}
+
+function checkWin() {
+    return (!scores['redFruits'] & !scores['yellowFruits'] & !scores['blueFruits']);
 }
 
 function addNode() {
@@ -231,17 +235,51 @@ function moveSnake() {
             }
 
             if (map[node.y][node.x] == body || map[node.y][node.x] == wall) {
-                alert('you lose');
                 game = false;
-            }
-            else if (map[node.y][node.x] == redFruit) {
-                updateScore('red');
-            }
-            else if (map[node.y][node.x] == yellowFruit) {
-                updateScore('yellow');
-            }
-            else if (map[node.y][node.x] == blueFruit) {
-                updateScore('blue');
+                clearMap();
+
+                // hide game screen , show lose message
+                document.getElementById('game').classList.add('hidden');
+                document.querySelector('.home h1').classList.remove('hidden');
+                document.querySelector('.home small').classList.remove('hidden');
+                document.querySelector('footer').classList.remove('hidden');
+                document.getElementById('lose').classList.remove('hidden');
+
+                // play lose sound
+                document.getElementById('lose-sound').play();
+            } else {
+                if (map[node.y][node.x] != tile) {
+                    if (map[node.y][node.x] == redFruit) {
+                        updateScore('red');
+                    }
+                    else if (map[node.y][node.x] == yellowFruit) {
+                        updateScore('yellow');
+                    }
+                    else if (map[node.y][node.x] == blueFruit) {
+                        updateScore('blue');
+                    }
+
+                    // play eat fruit sound
+                    document.getElementById('eat-sound').play();
+
+                    // check if the player win or add new fruit
+                    if (checkWin()) {
+                        game = false;
+                        clearMap();
+
+                        // hide game screen , show win message
+                        document.getElementById('game').classList.add('hidden');
+                        document.querySelector('.home h1').classList.remove('hidden');
+                        document.querySelector('.home small').classList.remove('hidden');
+                        document.querySelector('footer').classList.remove('hidden');
+                        document.getElementById('win').classList.remove('hidden');
+
+                        // play win sound
+                        document.getElementById('win-sound').play();
+                    } else {
+                        createFruit();
+                    }
+                }
             }
         } else {
             node.y = oldY;
