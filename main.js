@@ -26,7 +26,7 @@ const blueFruit   = 5;
 let map    = [];
 let snake  = [];
 let game   = false;
-let sound   = true;
+let mute   = false;
 
 let scores = {
     redFruits   : 0,
@@ -79,11 +79,11 @@ function initGame() {
     }
     
     // set random scores
-    scores.redFruits = 1; //randomNumber(minScore, maxScore); 
+    scores.redFruits = randomNumber(minScore, maxScore); 
     updateScore('red', true);
-    scores.yellowFruits = 0; //randomNumber(minScore, maxScore);
+    scores.yellowFruits = randomNumber(minScore, maxScore);
     updateScore('yellow', true);
-    scores.blueFruits = 0; //randomNumber(minScore, maxScore); 
+    scores.blueFruits = randomNumber(minScore, maxScore); 
     updateScore('blue', true);
 
     // create new snake
@@ -150,6 +150,32 @@ function checkWin() {
     return (!scores['redFruits'] & !scores['yellowFruits'] & !scores['blueFruits']);
 }
 
+function showScreen(screen) {
+    // default show/hide for all screens
+    document.querySelectorAll('.screen').forEach(function(item) {
+        item.classList.add('hidden');
+    });
+    
+    document.getElementById('home-buttons').classList.add('hidden');
+    document.querySelector('.home h1').classList.remove('hidden');
+    document.querySelector('.home small').classList.remove('hidden');
+    document.querySelector('footer').classList.remove('hidden');
+
+    // handle home screens
+    if (screen == 'home') {
+        document.getElementById('home-buttons').classList.remove('hidden');
+    } else {
+        document.getElementById(screen).classList.remove('hidden');
+    }
+
+    // handle game screen
+    if (screen == 'game') {
+        document.querySelector('.home h1').classList.add('hidden');
+        document.querySelector('.home small').classList.add('hidden');
+        document.querySelector('footer').classList.add('hidden');
+    }
+}
+
 function addNode() {
     let x = 0, y = 0, dir = '';
 
@@ -207,6 +233,31 @@ function clearMap() {
     document.getElementById('map').innerHTML = '';
 }
 
+function playSound(action) {
+    if (!mute) {
+        document.getElementById(`${action}-sound`).play();
+    }
+}
+
+function startGame() {
+    game = true;
+    initGame();
+    drawMap();
+}
+
+function toggleGameStatus() {
+    game = !game;
+}
+
+function stopGame() {
+    game = false;
+    clearMap();
+}
+
+function toggleMute() {
+    mute = !mute;
+}
+
 function moveSnake() {
     let x = 0, y = 0, dir = '';
     let oldX = 0, oldY = 0, oldDir = '';
@@ -235,18 +286,10 @@ function moveSnake() {
             }
 
             if (map[node.y][node.x] == body || map[node.y][node.x] == wall) {
-                game = false;
-                clearMap();
-
-                // hide game screen , show lose message
-                document.getElementById('game').classList.add('hidden');
-                document.querySelector('.home h1').classList.remove('hidden');
-                document.querySelector('.home small').classList.remove('hidden');
-                document.querySelector('footer').classList.remove('hidden');
-                document.getElementById('lose').classList.remove('hidden');
-
-                // play lose sound
-                document.getElementById('lose-sound').play();
+                // set game in lose mode
+                stopGame();
+                showScreen('lose');
+                playSound('lose');
             } else {
                 if (map[node.y][node.x] != tile) {
                     if (map[node.y][node.x] == redFruit) {
@@ -259,23 +302,14 @@ function moveSnake() {
                         updateScore('blue');
                     }
 
-                    // play eat fruit sound
-                    document.getElementById('eat-sound').play();
+                    playSound('eat');
 
                     // check if the player win or add new fruit
                     if (checkWin()) {
-                        game = false;
-                        clearMap();
-
-                        // hide game screen , show win message
-                        document.getElementById('game').classList.add('hidden');
-                        document.querySelector('.home h1').classList.remove('hidden');
-                        document.querySelector('.home small').classList.remove('hidden');
-                        document.querySelector('footer').classList.remove('hidden');
-                        document.getElementById('win').classList.remove('hidden');
-
-                        // play win sound
-                        document.getElementById('win-sound').play();
+                        // set game in win mode
+                        stopGame();
+                        showScreen('win');
+                        playSound('win');
                     } else {
                         createFruit();
                     }
@@ -300,7 +334,16 @@ let gameTimer = setInterval(function () {
     if (!game) return;
 
     if (timer.minutes == 0 && timer.seconds == 0) {
-        // check scores
+        // check if the player win or lose
+        stopGame();
+
+        if (checkWin()) {
+            showScreen('win');
+            playSound('win');
+        } else {
+            showScreen('lose');
+            playSound('lose');
+        }
     }
     else if (timer.seconds == 0) {
         timer.minutes -= 1;
@@ -341,9 +384,9 @@ window.addEventListener('keyup', function (e) {
         snake[0].dir = 'left';
     }
 
+    moveSnake();
     clearMap();
     drawMap();
-    moveSnake();
     
     return;
 });
@@ -361,44 +404,41 @@ document.querySelectorAll('.home ul li').forEach(function(item) {
 
 document.querySelectorAll('.menu-button').forEach(function(item) {
     item.addEventListener("click", function() {   
-        document.getElementById('home-buttons').classList.add('hidden');
-        document.getElementById(this.getAttribute('data-screen')).classList.remove('hidden');
+        showScreen(this.getAttribute('data-screen'));
 
-        // hide header / footer , in case the game screen
+        // start the game , in case the game screen
         if (this.getAttribute('data-screen') == 'game') {
-            document.querySelector('.home h1').classList.add('hidden');
-            document.querySelector('.home small').classList.add('hidden');
-            document.querySelector('footer').classList.add('hidden');
-
-            // start the game
-            game = true;
-            initGame();
-            drawMap();
+            startGame();
         }
     });
 });
 
 document.querySelectorAll('.back-button').forEach(function(item) {
     item.addEventListener("click", function() {
-        document.querySelectorAll('.screen').forEach(function(item) {
-            item.classList.add('hidden');
-        });
+        showScreen('home');
+    });
+});
 
-        document.getElementById('home-buttons').classList.remove('hidden');
+document.querySelectorAll('.play-again-button').forEach(function(item) {
+    item.addEventListener("click", function () {
+        showScreen('game');
+        startGame();
     });
 });
 
 document.querySelector('#quit-button').addEventListener("click", function() {
     if (!confirm('Are You Sure?')) return;
 
-    // stop the game
-    game = false;
-    clearMap();
+    stopGame();
+    showScreen('home');
+});
 
-    // hide game screen , show home menu
-    document.getElementById('game').classList.add('hidden');
-    document.getElementById('home-buttons').classList.remove('hidden');
-    document.querySelector('.home h1').classList.remove('hidden');
-    document.querySelector('.home small').classList.remove('hidden');
-    document.querySelector('footer').classList.remove('hidden');
+document.querySelector('#pause-button').addEventListener("click", function () {
+    toggleGameStatus();
+    document.querySelector('#pause-button').innerHTML = (game)? 'Pause' : 'Continue';
+});
+
+document.querySelector('#mute-button').addEventListener("click", function () {
+    toggleMute();
+    document.querySelector('#mute-button').innerHTML = (mute)? 'Unmute' : 'Mute';
 });
